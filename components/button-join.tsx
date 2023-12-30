@@ -9,7 +9,7 @@ const ButtonJoin = ({variant,url, children}: {url: string, children: React.React
     }
 
     return (
-        <Button variant={variant} onClick={handleJoin}>
+        <Button accessKey={"test"} variant={variant} onClick={handleJoin}>
             {children}
         </Button>
     );
