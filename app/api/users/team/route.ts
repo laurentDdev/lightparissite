@@ -1,12 +1,12 @@
-
 import prisma from "@/lib/connect";
 import {NextResponse} from "next/server";
-export const GET = async ( ) => {
+
+export const GET = async () => {
     try {
         // @ts-ignore
-        const teams = await prisma.team.findMany({
+        const teams = await prisma.user.findMany({
             include:{
-                User: true
+                team: true
             }
         })
         return NextResponse.json(teams, {status: 200})

@@ -6,8 +6,8 @@ export type TUrlNavigationMenu = {
 }
 
 
-export type TeamWithUsers = Prisma.TeamGetPayload<{
+export type usersWithTeam = Prisma.UserGetPlayload<{
     include: {
-        User: true
+        team: true
     }
 }>

@@ -1,9 +1,9 @@
 import {useQuery} from "react-query";
 import axios from "axios";
 
-export const useTeams = () => {
+export const useUsersTeam = () => {
   return useQuery("teams", async () => {
-    const { data } = await axios.get("/api/teams");
+    const { data } = await axios.get("/api/users/team");
     return data;
   });
 };
