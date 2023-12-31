@@ -51,7 +51,7 @@ const ProfileBtn = () => {
                 <DropdownMenuTrigger >
                     <Button variant={"ghost"} className={"flex items-center gap-2 mt-4 md:mt-0"}>
                         <Avatar>
-                            <AvatarImage src={session.user?.image as string} />
+                            <AvatarImage src={session.user?.image as string} alt={session?.user?.name as string} />
                             <AvatarFallback>{session.user?.name}</AvatarFallback>
                         </Avatar>
                         <p>{session.user?.name}</p>
