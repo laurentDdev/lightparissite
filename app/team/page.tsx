@@ -25,18 +25,18 @@ const Page = () => {
                             >
                                 <CarouselContent>
                                     {
-                                        !isFetching && users?.map((user: usersWithTeam) => {
+                                        !isFetching && users?.filter((user: usersWithTeam) => user.team != null).map((user: usersWithTeam) => {
                                             return (
                                                 <CarouselItem key={user.id} className="md:basis-1/2 lg:basis-1/3">
                                                     <div className="p-1">
                                                         <Card className={"min-w-min"}>
                                                             <CardHeader>
                                                                 <CardTitle>
-                                                                    {user.team.name}
+                                                                    {user.team?.name}
                                                                 </CardTitle>
                                                             </CardHeader>
                                                             <CardContent className="flex flex-col gap-3 aspect-square items-center justify-center p-6">
-                                                                <Image className={"rounded-full"} src={user.image} alt={user.name} width={100} height={100} />
+                                                                <Image className={"rounded-full"} src={user.image as string} alt={user.name as string} width={100} height={100} />
                                                                 <p className={"text-xl"}>{user.name}</p>
                                                             </CardContent>
                                                         </Card>
