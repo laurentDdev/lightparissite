@@ -3,7 +3,7 @@
 import {Button} from "@/components/ui/button";
 import {FaDiscord} from "react-icons/fa";
 import {cn} from "@/lib/utils";
-import {Poppins} from 'next/font/google'
+
 import {signIn, signOut, useSession} from "next-auth/react";
 import {
     DropdownMenu,
@@ -19,6 +19,8 @@ import { MdLocalPolice } from "react-icons/md";
 import { FaRegLightbulb } from "react-icons/fa";
 import { FaLightbulb } from "react-icons/fa";
 import {useTheme} from "next-themes";
+
+import {Poppins} from 'next/font/google'
 const poppins = Poppins({weight: "900", subsets: ['latin']})
 const ProfileBtn = () => {
 
