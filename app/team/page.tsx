@@ -19,7 +19,9 @@ const Page = () => {
     return (
         <PageContainer>
             <div className={"py-4 flex flex-col items-center justify-evenly h-[70vh]"}>
-                <h1 className={"text-center text-4xl"}>Notre équipe</h1>
+                {!isFetching && users.filter((user: usersWithTeam) => user.team != null).length > 0 ? (
+                    <>
+                    <h1 className={`text-center text-4xl lg:text-7xl ${poppins.className}`}>Notre équipe</h1>
                             <Carousel
                                 opts={{
                                     align: "center",
@@ -39,7 +41,7 @@ const Page = () => {
                                                                     </CardTitle>
                                                                 </CardHeader>
                                                                 <CardContent className="flex flex-col gap-3 aspect-square items-center justify-center p-6">
-                                                                    <Image className={"rounded-full"} src={user.image as string} alt={user.name as string} width={100} height={100} />
+                                                                    <Image className={"rounded-full"} src={user.image as string} alt={user.name as string} width={150} height={150} />
                                                                     <p className={`text-xl ${smallPoppins.className}`}>{user.name}</p>
                                                                 </CardContent>
                                                             </Card>
@@ -54,9 +56,11 @@ const Page = () => {
                                 <CarouselPrevious />
                                 <CarouselNext />
                             </Carousel>
+                            </>
+                ) : (<p className="text-xl text-slay-500">Bizarre on dirais que l'équipe est vide ...</p>)}
             </div>
         </PageContainer>
     );
 };
 
-export default Page;
+export default Page;''

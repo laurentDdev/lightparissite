@@ -46,9 +46,10 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-
   teamId String?
   team   Team?   @relation(fields: [teamId], references: [id])
+  roleId String @default("user")
+  role   Role?   @relation(fields: [roleId], references: [name])
 
   @@index([teamId])
 }
@@ -66,3 +67,11 @@ model Team {
   name String
   User User[]
 }
+
+model Role {
+  name String @id @unique
+  users User[]
+}
+
+
+
