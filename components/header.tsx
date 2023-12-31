@@ -1,6 +1,5 @@
 import PageContainer from "@/components/page-container";
 import HeaderNavigation from "@/components/header-navigation";
-import ToggleTheme from "@/components/toggle-theme";
 import PlayerState from "@/components/player-state";
 import ResponsiveMenu from "@/components/responsive-menu";
 import {TUrlNavigationMenu} from "@/types";
@@ -28,12 +27,13 @@ const urlNavigationMenu: TUrlNavigationMenu[] = [
     }
 ]
 const Header = () => {
+
+
     return (
-        <header className={"p-4 border-b"}>
+        <header className={"p-4"}>
             <PageContainer>
                 <div className={"flex items-center justify-between w-full"}>
                     <div className={"flex gap-2"}>
-                        <ToggleTheme/>
                         <PlayerState/>
                     </div>
 

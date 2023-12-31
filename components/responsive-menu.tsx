@@ -6,6 +6,7 @@ import {Button} from "@/components/ui/button";
 import {TUrlNavigationMenu} from "@/types";
 import {useState} from "react";
 import SocialNetwork from "@/components/social-network";
+import ProfileBtn from "@/components/profile-btn";
 
 
 type Props = {
@@ -28,6 +29,7 @@ const ResponsiveMenu = ({urlNavigationMenu}: Props) => {
                         </Link>
                     ))}
                 </div>
+                <ProfileBtn />
                 <SheetFooter >
                     <div className={"flex"}>
                         <SocialNetwork />
@@ -39,5 +41,13 @@ const ResponsiveMenu = ({urlNavigationMenu}: Props) => {
         </Sheet>
     );
 };
+
+const roles = [
+    "User",
+    "Administrateur",
+    "Developpeur",
+    "Douanier",
+    "Community Manager",
+]
 
 export default ResponsiveMenu;

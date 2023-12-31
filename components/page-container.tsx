@@ -1,10 +1,18 @@
+"use client";
+
+import {useSession} from "next-auth/react";
 
 const PageContainer = ({children}: {children: React.ReactNode}) => {
-    return (
-        <div className={'mx-auto w-full max-w-7xl'}>
-            {children}
-        </div>
-    );
+
+    const {data: session, status} = useSession();
+
+    if (status !== "loading") {
+        return (
+            <div className={'mx-auto w-full max-w-7xl'}>
+                {children}
+            </div>
+        );
+    }
 };
 
 export default PageContainer;
