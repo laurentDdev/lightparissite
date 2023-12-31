@@ -25,7 +25,7 @@ const Page = () => {
                             >
                                 <CarouselContent>
                                     {
-                                        !isFetching && users?.filter((user: usersWithTeam) => user.team != null).map((user: usersWithTeam) => {
+                                        !isFetching && users?.filter((user: usersWithTeam) => user.teamId != null).map((user: usersWithTeam) => {
                                             return (
                                                 <CarouselItem key={user.id} className="md:basis-1/2 lg:basis-1/3">
                                                     <div className="p-1">
