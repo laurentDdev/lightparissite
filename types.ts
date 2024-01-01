@@ -11,3 +11,11 @@ export type usersWithTeam = Prisma.UserGetPayload<{
         team: true
     }
 }>
+
+
+export enum ERole {
+    USER = "user",
+    DOUANIER = "douanier",
+    ADMIN = "admin",
+
+}

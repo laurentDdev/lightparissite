@@ -2,9 +2,10 @@ import { getAuthSession } from "@/lib/auth-options";
 import prisma from "@/lib/connect"
 import { NextResponse } from "next/server";
 
-export const GET = async ({params}: {params:{id: string}}) => {
+export const GET = async (req: Request, {params}: {params:{id: string}}) => {
+    const {id} = params
     try {
-        const {id} = params
+
         const session = await getAuthSession()
         if (!session) {
             return NextResponse.json("user is not logged in", {status: 401})
@@ -17,10 +18,9 @@ export const GET = async ({params}: {params:{id: string}}) => {
         })
 
         return NextResponse.json(user, {status: 200})
-        
+
     }catch (e) {
         console.log(e);
         return NextResponse.json({error: "(users/id/role) Something went wrong"}, {status: 500})
-        
     }
 }
