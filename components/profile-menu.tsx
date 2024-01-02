@@ -18,6 +18,7 @@ import { useTheme } from "next-themes";
 import {signOut} from "next-auth/react";
 import { useUserRole } from "@/hooks/useUserRole";
 import {ERole} from "@/types";
+import {useRouter} from "next/navigation";
 
 
 type Props = {
@@ -29,6 +30,8 @@ type Props = {
 const ProfileMenu = ({email, name, image}: Props) => {
 
     const {theme, setTheme} = useTheme();
+
+    const router = useRouter()
 
     const {data: user, isFetching, error} = useUserRole(email);
 
@@ -81,7 +84,7 @@ const ProfileMenu = ({email, name, image}: Props) => {
 
                     {
                         ( user && user.roleId == ERole.ADMIN) && (
-                            <DropdownMenuItem className={"cursor-pointer flex items-center gap-2"}>
+                            <DropdownMenuItem className={"cursor-pointer flex items-center gap-2"} onClick={() => router.push("/admin/dashboard/users")} >
                                 <MdAdminPanelSettings  />
                                 <span>Espace admin</span>
                             </DropdownMenuItem>

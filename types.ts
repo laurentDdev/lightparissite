@@ -12,6 +12,13 @@ export type usersWithTeam = Prisma.UserGetPayload<{
     }
 }>
 
+export type usersWithRoleAndTeam = Prisma.UserGetPayload<{
+    include: {
+        role: true,
+        team: true
+    }
+}>
+
 
 export enum ERole {
     USER = "user",

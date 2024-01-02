@@ -10,8 +10,6 @@ import Link from "next/link";
 import ProfileBtn from "@/components/profile-btn";
 import {Poppins} from 'next/font/google'
 import {TUrlNavigationMenu} from "@/types";
-import {useEffect, useState} from "react";
-import {Skeleton} from "@/components/ui/skeleton";
 
 const poppins = Poppins({weight: "900", subsets: ['latin']})
 
