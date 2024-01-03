@@ -1,5 +1,5 @@
-"use client";
-import React, { useEffect, useMemo, useCallback, useState } from 'react';
+"use client"
+import React, { useEffect } from 'react';
 import { useUserRole } from "@/hooks/useUserRole";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -12,50 +12,24 @@ import { Input } from "@/components/ui/input";
 const Page = () => {
     const { data: session, status } = useSession();
     const [currentPage, setCurrentPage] = React.useState(1);
+    const [myUsers, setMyUsers] = React.useState<usersWithRoleAndTeam[]>([]);
     const router = useRouter();
 
     const { data: users, isFetching: userFetching, error: userError } = useUsers();
-    const [filteredUsers, setFilteredUsers] = useState<usersWithRoleAndTeam[] | null>(null);
 
-    const startIndex = useMemo(() => (currentPage - 1) * 10, [currentPage]);
-    const endIndex = useMemo(() => startIndex + 10, [startIndex]);
-    const totalPages = useMemo(() => Math.ceil((filteredUsers?.length || 0) / 10), [filteredUsers]);
-
-    const myUsers = useMemo(() => filteredUsers?.slice(startIndex, endIndex) || [], [filteredUsers, startIndex, endIndex]);
+    const startIndex = (currentPage - 1) * 10;
+    const endIndex = startIndex + 10;
+    const totalPages = Math.ceil(users?.length / 10);
 
     useEffect(() => {
-        if (!users) return;
-        setFilteredUsers(users);
-    }, [users]);
-
-    const { data: user, isFetching, error } = useUserRole(session?.user?.email as string);
-
-    const handleNextPage = useCallback(() => {
-        if (currentPage === totalPages) return;
-        setCurrentPage((prevPage) => prevPage + 1);
-    }, [currentPage, totalPages]);
-
-    const handlePreviousPage = useCallback(() => {
-        if (currentPage === 1) return;
-        setCurrentPage((prevPage) => prevPage - 1);
-    }, [currentPage]);
-
-    const handleFilterUsers = useCallback((e: any) => {
-        const value = e.target.value;
-        setCurrentPage(1);
-
-        if (!users) return;
-
-        const filteredUsers = users.filter((user: usersWithRoleAndTeam) => {
-            return user.email?.toLowerCase().includes(value.toLowerCase());
-        });
-
-        setFilteredUsers(filteredUsers);
-    }, [users]);
+        setMyUsers(users?.slice(startIndex, endIndex));
+    }, [users, currentPage]);
 
     if (status === "unauthenticated") {
         return router.back();
     }
+
+    const { data: user, isFetching, error } = useUserRole(session?.user?.email as string);
 
     if (user?.roleId !== ERole.ADMIN) {
         return router.back();
@@ -65,13 +39,40 @@ const Page = () => {
         return <div>Chargement...</div>;
     }
 
-    return (
-        <>
-            <Input placeholder={"Rechercher un utilisateur par email"} onInput={handleFilterUsers} />
-            <TableUsersAdmin myUsers={myUsers} usersLength={filteredUsers?.length || 0} />
-            <PaginationUsersAdmin handleNextPage={handleNextPage} handlePreviousPage={handlePreviousPage} />
-        </>
-    );
+    const handleNextPage = () => {
+        if (currentPage === totalPages) return;
+        setCurrentPage((prevPage) => prevPage + 1);
+    };
+
+    const handlePreviousPage = () => {
+        if (currentPage === 1) return;
+        setCurrentPage((prevPage) => prevPage - 1);
+    };
+
+    const handleFilterUsers = (e: any) => {
+        const value = e.target.value;
+        if (value === "") {
+            setCurrentPage(1);
+            setMyUsers(users?.slice(startIndex, endIndex));
+            return;
+        }
+        const filteredUsers = users?.filter((user: usersWithRoleAndTeam) => {
+            return user.email?.toLowerCase().includes(value.toLowerCase());
+        });
+        setCurrentPage(1);
+        setMyUsers(filteredUsers?.slice(startIndex, endIndex));
+    };
+
+    if (!userFetching) {
+        return (
+            <>
+                <Input placeholder={"Rechercher un utilisateur par email"} onInput={handleFilterUsers} />
+                <TableUsersAdmin myUsers={myUsers} usersLength={users?.length} />
+                <PaginationUsersAdmin  handleNextPage={handleNextPage} handlePreviousPage={handlePreviousPage} />
+            </>
+        );
+    }
 };
 
-export default Page;
+
+export default Page
