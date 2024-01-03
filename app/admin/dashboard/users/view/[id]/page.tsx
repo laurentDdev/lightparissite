@@ -89,32 +89,12 @@ const Page = ({params}: {params: {id: string}}) => {
         if (!editMode) {
             setEditMode(true)
         }else {
-            if (removeTeam) {
-                updateUserMutation.mutate({
-                    role: newRole || user?.role?.name as string,
-                    team: null
-                })
-            } else {
-                updateUserMutation.mutate({
-                    role: newRole || user?.role?.name as string,
-                    team: teams?.find((team : Team) => team?.name === newTeam)?.id || teams?.find((team : Team) => user?.team?.name === newTeam)?.id as string
-                })
-            }
-
+            updateUserMutation.mutate({
+                role: newRole || user?.role?.name as string,
+                team: teams?.find((team : Team) => team?.name === newTeam)?.id || teams?.find((team : Team) => user?.team?.name === newTeam)?.id as string
+            })
         }
     }
-
-    const handleChangeRole = (role: string) => {
-
-        if (role === "aucune") {
-            setRemoveTeam(true)
-        } else {
-            setRemoveTeam(false)
-        }
-
-        setNewRole(role)
-    }
-
     return (
         <Card className={"h-full"}>
             <CardHeader>
@@ -137,7 +117,7 @@ const Page = ({params}: {params: {id: string}}) => {
                             <Label htmlFor={"role"} >Role</Label>
                             {
                                 editMode ? (
-                                    <Select onValueChange={handleChangeRole}>
+                                    <Select onValueChange={setNewRole}>
                                         <SelectTrigger>
                                             <p>{newRole ? newRole : user?.role?.name as string}</p>
                                         </SelectTrigger>
@@ -147,7 +127,6 @@ const Page = ({params}: {params: {id: string}}) => {
                                                     <SelectItem key={role.name} value={role.name}>{role.name}</SelectItem>
                                                 ))
                                             }
-                                            <SelectItem value={"aucune"}>Aucune</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 ) : (

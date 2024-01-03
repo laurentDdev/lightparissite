@@ -23,7 +23,7 @@ const Page = () => {
     return (
         <PageContainer>
             <div className={"py-4 flex flex-col items-center justify-evenly h-[70vh]"}>
-                {!isFetching && users.filter((user: usersWithTeam) => user.team?.name != "aucune").length > 0 ? (
+                {!isFetching && users.filter((user: usersWithTeam) => user.team?.name !== "aucune").length > 0 ? (
                     <>
                     <h1 className={`text-center text-4xl lg:text-7xl ${poppins.className}`}>Notre équipe</h1>
                             <Carousel
