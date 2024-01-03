@@ -10,7 +10,7 @@ export const GET = async () => {
             }
         })
         return NextResponse.json(teams, {status: 200})
-    }catch (e) {
-        return  NextResponse.json({message: "Something went wrong"}, {status: 500})
+    }catch (e: any) {
+        return  NextResponse.json({message: "Something went wrong", error: e.message}, {status: 500})
     }
 }

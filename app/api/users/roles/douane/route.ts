@@ -2,6 +2,8 @@ import {getAuthSession} from "@/lib/auth-options";
 import {NextResponse} from "next/server";
 import {ERole} from "@/types";
 
+import prisma from "@/lib/connect";
+
 export const GET = async () => {
     try {
 
