@@ -1,9 +1,14 @@
 import {useQuery} from "react-query";
 import axios from "axios";
+import {fetcher} from "@/lib/fetcher";
+import useSWR from "swr";
 
 export const useUsers = () => {
-    return useQuery("users", async () => {
-        const { data } = await axios.get("/api/users")
-        return data
-    })
+    const {data, error, isLoading } = useSWR("/api/users", fetcher)
+
+    return {
+        data,
+        error,
+        isFetching: isLoading,
+    }
 }

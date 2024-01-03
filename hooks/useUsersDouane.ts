@@ -1,9 +1,14 @@
 import {useQuery} from "react-query";
 import axios from "axios";
+import useSWR from "swr";
+import {fetcher} from "@/lib/fetcher";
 
 export const useUsersDouane = () => {
-    return useQuery(["users", "douane"], async () => {
-        const { data } = await  axios.get(`/api/users/roles/douane`)
-        return data
-    })
+    const { data, error, isLoading } = useSWR("/api/users/roles/douane", fetcher)
+
+    return {
+        data,
+        error,
+        isFetching: isLoading,
+    }
 }

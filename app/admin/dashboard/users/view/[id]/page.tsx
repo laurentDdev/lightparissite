@@ -18,6 +18,8 @@ import {signOut, useSession} from "next-auth/react";
 import {useUserRole} from "@/hooks/useUserRole";
 import {ERole} from "@/types";
 import {useToast} from "@/components/ui/use-toast";
+import useSWR, {mutate} from "swr";
+import {fetcher} from "@/lib/fetcher";
 const Page = ({params}: {params: {id: string}}) => {
     const {id} = params;
     const { data: session, status } = useSession();
@@ -33,34 +35,31 @@ const Page = ({params}: {params: {id: string}}) => {
     const [newRole, setNewRole] = useState<string | null>(null)
     const [newTeam, setNewTeam] = useState<string | null>(null)
 
-    const [removeTeam, setRemoveTeam] = useState<boolean>(false)
 
-    const updateUserMutation = useMutation(
-        (updatedData: {role: string, team: string | null}) => axios.put(`/api/users/team/${id}`, updatedData).then((response) => console.log(response.data)),
-        {
-            onSuccess: () => {
-                setEditMode(false)
-                toast({
-                    title: "Utilisateur modifié",
-                    description: "L'utilisateur a bien été modifié"
-                })
-            },
+    const { data, error: err } = useSWR(`/api/users/team/${id}`, fetcher)
 
-        }
-    );
+    const updateUser = async (updatedData: {role: string, team: string | null}) => {
+        const response = await axios.put(`/api/users/team/${id}`, updatedData)
+        console.log(response.data)
+        mutate(`/api/users/team/${id}`)
+        setEditMode(false)
+        toast({
+            title: "Utilisateur modifié",
+            description: "L'utilisateur a bien été modifié"
+        })
+    }
 
-    const deleteUserMutation = useMutation(
-        () => axios.delete(`/api/users/${id}`).then((response) => console.log(response.data)),
-        {
-            onSuccess: () => {
-                toast({
-                    title: "Utilisateur supprimé",
-                    description: "L'utilisateur a bien été supprimé",
-                })
-                router.back()
-            }
-        }
-    );
+    const { data: deletedUserData, error: errorDeletedUser } = useSWR(`/api/users/${id}`, fetcher)
+
+    const deleteUser = async () => {
+        const response = await axios.delete(`/api/users/${id}`)
+        mutate(`/api/users/${id}`)
+        toast({
+            title: "Utilisateur supprimé",
+            description: "L'utilisateur a bien été supprimé"
+        })
+        router.back()
+    }
 
 
     if (userConnected?.roleId !== ERole.ADMIN) {
@@ -83,17 +82,17 @@ const Page = ({params}: {params: {id: string}}) => {
 
     const handleDelete = () => {
         alert("Voulez vous vraiment supprimer cet utilisateur ?")
-        deleteUserMutation.mutate()
+        deleteUser()
     }
 
     const handleEdit = ( )  => {
         if (!editMode) {
             setEditMode(true)
         }else {
-            updateUserMutation.mutate({
-                role: newRole || user?.role?.name as string,
-                team: teams?.find((team : Team) => team?.name === newTeam)?.id || teams?.find((team : Team) => user?.team?.name === newTeam)?.id as string
-            })
+            const role = newRole || user?.role?.name as string
+            const team = teams?.find((team : Team) => team?.name === newTeam)?.id || teams?.find((team : Team) => user?.team?.name === newTeam)?.id as string
+
+            updateUser({role, team})
         }
     }
     return (

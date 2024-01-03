@@ -27,7 +27,7 @@ const CarouselTeam = ({users}: {users: usersWithTeam[]}) => {
         Autoplay({ delay: 2000, stopOnInteraction: true })
     )
 
-    if (users.length < 0) {
+    if (users?.length < 0) {
         return <p>Il semblerai que l'équipe soit vide </p>
     }
 
@@ -41,7 +41,7 @@ const CarouselTeam = ({users}: {users: usersWithTeam[]}) => {
         >
             <CarouselContent>
                 {
-                    users.length > 0 && users?.filter((user: usersWithTeam) => user.teamId != "aucune").map((user: usersWithTeam) => {
+                    users?.length > 0 && users?.filter((user: usersWithTeam) => user.teamId != "aucune").map((user: usersWithTeam) => {
                         return (
                             <CarouselItem key={user.id} className="md:basis-1/2 lg:basis-1/3">
                                 <div className="p-1">

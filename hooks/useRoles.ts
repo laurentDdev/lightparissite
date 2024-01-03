@@ -1,9 +1,14 @@
 import {useQuery} from "react-query";
 import axios from "axios";
 import {Role} from "@prisma/client";
+import useSWR from "swr";
+import {fetcher} from "@/lib/fetcher";
 export const useRoles = () => {
-    return useQuery("roles", async () => {
-        const { data } = await axios.get("/api/roles")
-        return data as Role[]
-    })
+    const { data, error, isLoading } = useSWR("/api/roles", fetcher)
+
+    return {
+        data,
+        error,
+        isFetching: isLoading,
+    }
 }

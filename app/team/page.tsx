@@ -13,6 +13,7 @@ const Page = () => {
 
     const {data: users, isFetching, error} = useUsersTeam()
 
+    console.log("users", users)
 
     if (isFetching) {
         return (
