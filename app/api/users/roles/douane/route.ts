@@ -2,8 +2,7 @@ import {getAuthSession} from "@/lib/auth-options";
 import {NextResponse} from "next/server";
 import {ERole} from "@/types";
 
-export const GET = async (req: Request, {params}: {params:{id: string}}) => {
-    const {id} = params
+export const GET = async () => {
     try {
 
         const session = await getAuthSession()
@@ -26,7 +25,7 @@ export const GET = async (req: Request, {params}: {params:{id: string}}) => {
 
         const douaniers = await prisma.user.findMany({
             where: {
-                roleId: id
+                roleId: ERole.DOUANIER
             }
         })
 
@@ -34,6 +33,6 @@ export const GET = async (req: Request, {params}: {params:{id: string}}) => {
         return NextResponse.json(douaniers, {status: 200})
 
     }catch (e) {
-        return NextResponse.json({error: "(users/id/role) Something went wrong"}, {status: 500})
+        return NextResponse.json({error: "(users/roles/douane) Something went wrong"}, {status: 500})
     }
 }

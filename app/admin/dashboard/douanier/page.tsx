@@ -10,14 +10,14 @@ import PaginationUsersAdmin from "@/components/PaginationUsersAdmin";
 import { Input } from "@/components/ui/input";
 import TableDouanierAdmin from "@/components/TableDouanierAdmin";
 import PaginationDouanierAdmin from "@/components/PaginationDouanierAdmin";
-import {useUsersRole} from "@/hooks/useUsersRole";
+import {useUsersDouane} from "@/hooks/useUsersDouane";
 
 const Page = () => {
     const { data: session, status } = useSession();
     const [currentPage, setCurrentPage] = React.useState(1);
     const router = useRouter();
 
-    const { data: users, isFetching: userFetching, error: userError } = useUsersRole(ERole.DOUANIER);
+    const { data: users, isFetching: userFetching, error: userError } = useUsersDouane();
     const [filteredUsers, setFilteredUsers] = useState<usersWithRoleAndTeam[] | null>(null);
 
     const startIndex = useMemo(() => (currentPage - 1) * 10, [currentPage]);
