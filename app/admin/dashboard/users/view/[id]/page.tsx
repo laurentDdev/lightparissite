@@ -33,9 +33,10 @@ const Page = ({params}: {params: {id: string}}) => {
     const [newRole, setNewRole] = useState<string | null>(null)
     const [newTeam, setNewTeam] = useState<string | null>(null)
 
+    const [removeTeam, setRemoveTeam] = useState<boolean>(false)
 
     const updateUserMutation = useMutation(
-        (updatedData: {role: string, team: string}) => axios.put(`/api/users/${id}`, updatedData).then((response) => console.log(response.data)),
+        (updatedData: {role: string, team: string | null}) => axios.put(`/api/users/${id}`, updatedData).then((response) => console.log(response.data)),
         {
             onSuccess: () => {
                 setEditMode(false)
@@ -84,16 +85,34 @@ const Page = ({params}: {params: {id: string}}) => {
         deleteUserMutation.mutate()
     }
 
-    const handleEdit = () => {
+    const handleEdit = ( )  => {
         if (!editMode) {
             setEditMode(true)
         }else {
-            updateUserMutation.mutate({
-                role: newRole || user?.role?.name as string,
-                team: teams?.find((team : Team) => team?.name === newTeam)?.id || teams?.find((team : Team) => user?.team?.name === newTeam)?.id as string
-            })
+            if (removeTeam) {
+                updateUserMutation.mutate({
+                    role: newRole || user?.role?.name as string,
+                    team: null
+                })
+            } else {
+                updateUserMutation.mutate({
+                    role: newRole || user?.role?.name as string,
+                    team: teams?.find((team : Team) => team?.name === newTeam)?.id || teams?.find((team : Team) => user?.team?.name === newTeam)?.id as string
+                })
+            }
 
         }
+    }
+
+    const handleChangeRole = (role: string) => {
+
+        if (role === "aucune") {
+            setRemoveTeam(true)
+        } else {
+            setRemoveTeam(false)
+        }
+
+        setNewRole(role)
     }
 
     return (
@@ -118,7 +137,7 @@ const Page = ({params}: {params: {id: string}}) => {
                             <Label htmlFor={"role"} >Role</Label>
                             {
                                 editMode ? (
-                                    <Select onValueChange={setNewRole}>
+                                    <Select onValueChange={handleChangeRole}>
                                         <SelectTrigger>
                                             <p>{newRole ? newRole : user?.role?.name as string}</p>
                                         </SelectTrigger>
@@ -128,6 +147,7 @@ const Page = ({params}: {params: {id: string}}) => {
                                                     <SelectItem key={role.name} value={role.name}>{role.name}</SelectItem>
                                                 ))
                                             }
+                                            <SelectItem value={"aucune"}>Aucune</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 ) : (
