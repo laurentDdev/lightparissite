@@ -6,6 +6,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import AuthProvider from "@/providers/auth-provider";
 import QueryProvider from "@/providers/query-provider";
+import {Toaster} from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -29,7 +30,9 @@ export default function RootLayout({
                       <Header/>
                       <div className={"flex-grow"}>
                           {children}
+                          <Toaster />
                       </div>
+
                       <Footer/>
                   </div>
               </ThemeProvider>

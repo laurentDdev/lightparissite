@@ -14,7 +14,7 @@ type Props = {
     handlePreviousPage: () => void;
 };
 
-const PaginationUsersAdmin = ({ handleNextPage, handlePreviousPage }: Props) => (
+const PaginationDouanierAdmin = ({ handleNextPage, handlePreviousPage }: Props) => (
     <Pagination>
         <PaginationContent>
             <PaginationItem className={"cursor-pointer"}>
@@ -27,4 +27,4 @@ const PaginationUsersAdmin = ({ handleNextPage, handlePreviousPage }: Props) => 
     </Pagination>
 );
 
-export default PaginationUsersAdmin;
+export default PaginationDouanierAdmin;

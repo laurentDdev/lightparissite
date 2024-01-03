@@ -20,7 +20,6 @@ export const GET = async (req: Request, {params}: {params:{id: string}}) => {
         return NextResponse.json(user, {status: 200})
 
     }catch (e) {
-        console.log(e);
         return NextResponse.json({error: "(users/id/role) Something went wrong"}, {status: 500})
     }
 }

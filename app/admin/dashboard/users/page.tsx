@@ -69,7 +69,7 @@ const Page = () => {
         <>
             <Input placeholder={"Rechercher un utilisateur par email"} onInput={handleFilterUsers} />
             <TableUsersAdmin myUsers={myUsers} usersLength={filteredUsers?.length || 0} />
-            <PaginationUsersAdmin currentPage={currentPage} totalPages={totalPages} handleNextPage={handleNextPage} handlePreviousPage={handlePreviousPage} />
+            <PaginationUsersAdmin handleNextPage={handleNextPage} handlePreviousPage={handlePreviousPage} />
         </>
     );
 };

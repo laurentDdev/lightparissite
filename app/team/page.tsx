@@ -12,10 +12,14 @@ import {Poppins} from 'next/font/google'
 const poppins = Poppins({weight: "900", subsets: ['latin']})
 const smallPoppins = Poppins({weight: "400", subsets: ['latin']})
 import Image from "next/image";
+import Autoplay from "embla-carousel-autoplay";
+import {useRef} from "react";
 const Page = () => {
 
     const {data: users, isFetching, error} = useUsersTeam()
-
+    const plugin = useRef(
+        Autoplay({ delay: 2000, stopOnInteraction: true })
+    )
     return (
         <PageContainer>
             <div className={"py-4 flex flex-col items-center justify-evenly h-[70vh]"}>
@@ -23,6 +27,7 @@ const Page = () => {
                     <>
                     <h1 className={`text-center text-4xl lg:text-7xl ${poppins.className}`}>Notre équipe</h1>
                             <Carousel
+                                plugins={[plugin.current]}
                                 opts={{
                                     align: "center",
                                 }}

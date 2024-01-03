@@ -14,7 +14,7 @@ import {Button} from "@/components/ui/button";
 import {useRouter} from "next/navigation";
 import ButtonJoin from "@/components/button-join";
 
-const TableUsersAdmin = ({myUsers, usersLength}: {myUsers: usersWithRoleAndTeam[], usersLength: number}) => {
+const TableDouanierAdmin = ({myUsers, usersLength}: {myUsers: usersWithRoleAndTeam[], usersLength: number}) => {
 
     const router = useRouter();
 
@@ -57,4 +57,4 @@ const TableUsersAdmin = ({myUsers, usersLength}: {myUsers: usersWithRoleAndTeam[
     );
 };
 
-export default TableUsersAdmin;
+export default TableDouanierAdmin;
