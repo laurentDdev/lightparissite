@@ -41,8 +41,7 @@ const Page = ({params}: {params: {id: string}}) => {
                 setEditMode(false)
                 toast({
                     title: "Utilisateur modifié",
-                    description: "L'utilisateur a bien été modifié",
-                    status: "success",
+                    description: "L'utilisateur a bien été modifié"
                 })
             }
         }
@@ -55,7 +54,6 @@ const Page = ({params}: {params: {id: string}}) => {
                 toast({
                     title: "Utilisateur supprimé",
                     description: "L'utilisateur a bien été supprimé",
-                    status: "success",
                 })
                 router.back()
             }
