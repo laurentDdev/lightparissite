@@ -44,7 +44,8 @@ const Page = ({params}: {params: {id: string}}) => {
                     title: "Utilisateur modifié",
                     description: "L'utilisateur a bien été modifié"
                 })
-            }
+            },
+
         }
     );
 
