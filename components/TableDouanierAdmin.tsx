@@ -20,7 +20,7 @@ const TableDouanierAdmin = ({myUsers, usersLength}: {myUsers: usersWithRoleAndTe
 
     return (
         <Table>
-            <TableCaption>Liste de vos utilisateurs</TableCaption>
+            <TableCaption>Liste de vos douanier</TableCaption>
             <TableHeader>
                 <TableRow>
                     <TableHead>Id</TableHead>
@@ -49,7 +49,7 @@ const TableDouanierAdmin = ({myUsers, usersLength}: {myUsers: usersWithRoleAndTe
             </TableBody>
             <TableFooter>
                 <TableRow>
-                    <TableCell colSpan={4}>Nombre d'utilisateur</TableCell>
+                    <TableCell colSpan={4}>Nombre de douanier</TableCell>
                     <TableCell>{usersLength}</TableCell>
                 </TableRow>
             </TableFooter>

@@ -36,7 +36,7 @@ const Page = ({params}: {params: {id: string}}) => {
     const [removeTeam, setRemoveTeam] = useState<boolean>(false)
 
     const updateUserMutation = useMutation(
-        (updatedData: {role: string, team: string | null}) => axios.put(`/api/users/${id}`, updatedData).then((response) => console.log(response.data)),
+        (updatedData: {role: string, team: string | null}) => axios.put(`/api/users/team/${id}`, updatedData).then((response) => console.log(response.data)),
         {
             onSuccess: () => {
                 setEditMode(false)

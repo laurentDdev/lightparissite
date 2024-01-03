@@ -69,7 +69,7 @@ const Page = () => {
     if (!userFetching) {
         return (
             <>
-                <Input placeholder={"Rechercher un utilisateur par email"} onInput={handleFilterUsers} />
+                <Input placeholder={"Rechercher un douanier par email"} onInput={handleFilterUsers} />
                 <TableDouanierAdmin myUsers={myUsers} usersLength={users?.length} />
                 <PaginationDouanierAdmin  handleNextPage={handleNextPage} handlePreviousPage={handlePreviousPage} />
             </>
