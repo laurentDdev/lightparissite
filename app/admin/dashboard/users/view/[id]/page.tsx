@@ -90,7 +90,7 @@ const Page = ({params}: {params: {id: string}}) => {
         }else {
             updateUserMutation.mutate({
                 role: newRole || user?.role?.name as string,
-                team: teams?.find((team : Team) => team?.name === newTeam)?.id || user?.team?.name as string
+                team: teams?.find((team : Team) => team?.name === newTeam)?.id || teams?.find((team : Team) => user?.team?.name === newTeam)?.id as string
             })
 
         }
