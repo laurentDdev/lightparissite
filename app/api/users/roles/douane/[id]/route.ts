@@ -3,7 +3,7 @@ import {ERole} from "@/types";
 import {NextResponse} from "next/server";
 
 
-export const DELETE = async (req: Request, {params}: {params: {id: string}}) => {
+export const PUT = async (req: Request, {params}: {params: {id: string}}) => {
     try {
         const { id } = params
 
@@ -50,7 +50,8 @@ export const DELETE = async (req: Request, {params}: {params: {id: string}}) => 
 
 
 
-    }catch (e) {
+    }catch (e: any) {
         console.log(e)
+        return NextResponse.json({error: "(users/roles/douane) Something went wrong", message : e.message}, {status: 500})
     }
 }

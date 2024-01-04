@@ -22,7 +22,7 @@ const TableDouanierAdmin = ({myUsers, usersLength}: {myUsers: usersWithRoleAndTe
 
 
     const handleDeleteDouanier = async (id: string) => {
-        const {data} = await axios.delete(`/api/users/roles/douane/${id}`)
+        const {data} = await axios.put(`/api/users/roles/douane/${id}`)
         console.log(data)
     }
 
