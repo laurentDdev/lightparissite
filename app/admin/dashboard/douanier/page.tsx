@@ -13,6 +13,7 @@ import PaginationDouanierAdmin from "@/components/PaginationDouanierAdmin";
 import {useUsersDouane} from "@/hooks/useUsersDouane";
 import axios from "axios";
 import {mutate} from "swr";
+import {useToast} from "@/components/ui/use-toast";
 
 const Page = () => {
     const { data: session, status } = useSession();
@@ -22,9 +23,12 @@ const Page = () => {
 
     const { data: users, isFetching: userFetching, error: userError } = useUsersDouane();
 
+    const {toast} = useToast();
+
     const startIndex = (currentPage - 1) * 10;
     const endIndex = startIndex + 10;
     const totalPages = Math.ceil(users?.length / 10);
+
 
     useEffect(() => {
         setMyUsers(users?.slice(startIndex, endIndex));
@@ -69,9 +73,21 @@ const Page = () => {
     };
 
     const handleDeleteDouanier = async (id: string) => {
-        const {data} = await axios.put(`/api/users/roles/douane/${id}`)
-
-        setMyUsers(myUsers.filter((user) => user.id !== id));
+        if (confirm("Etes vous sur de vouloir supprimer ce douanier ?")) {
+            try {
+                const {data} = await axios.put(`/api/users/roles/douane/${id}`)
+                setMyUsers(myUsers.filter((user) => user.id !== id));
+                toast({
+                    title: "Succès",
+                    description: "Le douanier a bien été supprimé",
+                })
+            }catch (e) {
+                toast({
+                    title: "Erreur",
+                    description: "Une erreur est survenue",
+                })
+            }
+        }
     }
 
     if (!userFetching) {

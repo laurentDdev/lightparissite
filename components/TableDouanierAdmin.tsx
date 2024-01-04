@@ -55,7 +55,7 @@ const TableDouanierAdmin = ({myUsers, usersLength, handleDeleteDouanier}: {myUse
             </TableBody>
             <TableFooter>
                 <TableRow>
-                    <TableCell colSpan={4}>Nombre de douanier</TableCell>
+                    <TableCell colSpan={5}>Nombre de douanier</TableCell>
                     <TableCell>{usersLength}</TableCell>
                 </TableRow>
             </TableFooter>

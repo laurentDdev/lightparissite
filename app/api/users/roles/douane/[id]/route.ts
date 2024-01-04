@@ -1,7 +1,7 @@
 import {getAuthSession} from "@/lib/auth-options";
 import {ERole} from "@/types";
 import {NextResponse} from "next/server";
-
+import prisma from "@/lib/connect";
 
 export const PUT = async (req: Request, {params}: {params: {id: string}}) => {
     try {
