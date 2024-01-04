@@ -1,36 +1,65 @@
 "use client"
-import {Card, CardContent} from "@/components/ui/card";
+import {Card, CardContent, CardHeader} from "@/components/ui/card";
 import {Input} from "@/components/ui/input";
 import {Select, SelectContent, SelectItem, SelectTrigger} from "@/components/ui/select";
 import {Label} from "@/components/ui/label";
 import {Textarea} from "@/components/ui/textarea";
 import {Button} from "@/components/ui/button";
 import {SyntheticEvent, useState} from "react";
+import {Question, Questions} from "@/questions";
 
 type FormWl = {
-    lastname?: string;
-    firstname?: string;
-    date?: string;
-    job?: string;
-    background?: string;
+    lastname: string;
+    firstname: string;
+    date: string;
+    job: string;
+    background: string;
 }
 
 type view = "form" | "question"
 
+const question : Question[] = Questions;
+
 const FormWl = () => {
 
-    const [inputValue, setInputValue] = useState<FormWl>({})
+    const [inputValue, setInputValue] = useState<FormWl>({
+        lastname: "",
+        firstname: "",
+        age: "",
+        job: "",
+        background: ""
+    })
     const [jobType, setJobType] = useState<string>("")
     const [view, setView] = useState<string>("form")
+
+    const [answers, setAnswers] = useState<string[]>([])
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue({...inputValue, [e.target.id]: e.target.value})
     }
 
+    const handleAnswer = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setAnswers([...answers, e.target.id])
+    }
+
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
-        console.log({...inputValue, jobType})
+        console.log("enterd")
+        const inputs = {...inputValue, jobType}
+
+        console.log(inputs)
+
+        if (inputs.lastname === "" || inputs.firstname === "" || inputs.date === "" || inputs.job === "" || inputs.background === "" || inputs.jobType === "")  return
+
+        if (inputs.lastname?.length < 3 || inputs.firstname?.length < 3 || inputs.job?.length < 3 || inputs.background?.length < 30) return
+
+        console.log("test")
         setView("question")
 
+    }
+
+    const handleConfirm = (e: SyntheticEvent) => {
+        e.preventDefault()
+        console.log(answers)
     }
 
     if (view == "form") {
@@ -52,7 +81,7 @@ const FormWl = () => {
                             <SelectTrigger>
                                 <Label htmlFor={"job_type"} >{jobType.length > 0 ? jobType : "Type de job"}</Label>
                             </SelectTrigger>
-                            <SelectContent>
+                            <SelectContent defaultValue={"legal"}>
                                 <SelectItem value={"legal"}>legal</SelectItem>
                                 <SelectItem value={"illegale"}>illegale</SelectItem>
                             </SelectContent>
@@ -70,9 +99,31 @@ const FormWl = () => {
 
     if (view === "question") {
         return (
-            <div>
-                <p>question</p>
-            </div>
+            <Card>
+                <CardHeader>
+                    <h1 className={"text-xl"}>Questionnaire</h1>
+                </CardHeader>
+                <CardContent>
+                    <form action="" className={"flex flex-col gap-5"}>
+                        {
+                            question.map((q: Question, index) => (
+                                <div key={index} className={"flex flex-col gap-3"}>
+                                    <Label >{q.question}</Label>
+                                    {
+                                        q.options.map((option: string, index) => (
+                                            <div className={"flex gap-2"}>
+                                                <input onInput={handleAnswer} type="radio" name={q.question} id={option} key={index} />
+                                                <label htmlFor={option}>{option}</label>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            ))
+                        }
+                        <Button type={"submit"} variant={"discord"} onClick={handleConfirm}>Envoyer</Button>
+                    </form>
+                    </CardContent>
+            </Card>
         )
     }
 };

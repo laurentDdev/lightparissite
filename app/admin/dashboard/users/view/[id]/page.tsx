@@ -40,6 +40,7 @@ const Page = ({params}: {params: {id: string}}) => {
         const response = await axios.put(`/api/users/team/${id}`, updatedData)
         console.log(response.data)
         mutate(`/api/users/team/${id}`)
+
         setEditMode(false)
         toast({
             title: "Utilisateur modifié",
@@ -68,7 +69,7 @@ const Page = ({params}: {params: {id: string}}) => {
 
 
     if (isFetching || roleFetching || teamFetching) {
-        return <Skeleton />
+        return <Skeleton  />
     }
 
     if (!user) {
@@ -77,8 +78,11 @@ const Page = ({params}: {params: {id: string}}) => {
 
 
     const handleDelete = () => {
-        alert("Voulez vous vraiment supprimer cet utilisateur ?")
-        deleteUser()
+        if (confirm("alert(\"Voulez vous vraiment supprimer cet utilisateur ?")) {
+            deleteUser()
+        } else {
+            return
+        }
     }
 
     const handleEdit = ( )  => {
