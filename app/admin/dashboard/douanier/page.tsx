@@ -11,6 +11,8 @@ import { Input } from "@/components/ui/input";
 import TableDouanierAdmin from "@/components/TableDouanierAdmin";
 import PaginationDouanierAdmin from "@/components/PaginationDouanierAdmin";
 import {useUsersDouane} from "@/hooks/useUsersDouane";
+import axios from "axios";
+import {mutate} from "swr";
 
 const Page = () => {
     const { data: session, status } = useSession();
@@ -66,11 +68,17 @@ const Page = () => {
         setMyUsers(filteredUsers?.slice(startIndex, endIndex));
     };
 
+    const handleDeleteDouanier = async (id: string) => {
+        const {data} = await axios.put(`/api/users/roles/douane/${id}`)
+
+        setMyUsers(myUsers.filter((user) => user.id !== id));
+    }
+
     if (!userFetching) {
         return (
             <>
                 <Input placeholder={"Rechercher un douanier par email"} onInput={handleFilterUsers} />
-                <TableDouanierAdmin myUsers={myUsers} usersLength={users?.length} />
+                <TableDouanierAdmin myUsers={myUsers} usersLength={users?.length} handleDeleteDouanier={handleDeleteDouanier} />
                 <PaginationDouanierAdmin  handleNextPage={handleNextPage} handlePreviousPage={handlePreviousPage} />
             </>
         );

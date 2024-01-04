@@ -14,17 +14,15 @@ import {Button} from "@/components/ui/button";
 import {useRouter} from "next/navigation";
 import ButtonJoin from "@/components/button-join";
 import axios from "axios";
+import {mutate} from "swr";
 
-const TableDouanierAdmin = ({myUsers, usersLength}: {myUsers: usersWithRoleAndTeam[], usersLength: number}) => {
+const TableDouanierAdmin = ({myUsers, usersLength, handleDeleteDouanier}: {myUsers: usersWithRoleAndTeam[], usersLength: number, handleDeleteDouanier:  (id: string) => void}) => {
 
     const router = useRouter();
 
 
 
-    const handleDeleteDouanier = async (id: string) => {
-        const {data} = await axios.put(`/api/users/roles/douane/${id}`)
-        console.log("Douane updated", data)
-    }
+
 
     return (
         <Table>
