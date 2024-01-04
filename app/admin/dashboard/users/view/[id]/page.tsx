@@ -36,8 +36,6 @@ const Page = ({params}: {params: {id: string}}) => {
     const [newTeam, setNewTeam] = useState<string | null>(null)
 
 
-    const { data, error: err } = useSWR(`/api/users/team/${id}`, fetcher)
-
     const updateUser = async (updatedData: {role: string, team: string | null}) => {
         const response = await axios.put(`/api/users/team/${id}`, updatedData)
         console.log(response.data)
@@ -48,8 +46,6 @@ const Page = ({params}: {params: {id: string}}) => {
             description: "L'utilisateur a bien été modifié"
         })
     }
-
-    const { data: deletedUserData, error: errorDeletedUser } = useSWR(`/api/users/${id}`, fetcher)
 
     const deleteUser = async () => {
         const response = await axios.delete(`/api/users/${id}`)

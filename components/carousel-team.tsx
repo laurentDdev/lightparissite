@@ -41,7 +41,7 @@ const CarouselTeam = ({users}: {users: usersWithTeam[]}) => {
         >
             <CarouselContent>
                 {
-                    users?.length > 0 && users?.filter((user: usersWithTeam) => user.teamId != "aucune").map((user: usersWithTeam) => {
+                    users?.length > 0 && users?.filter((user: usersWithTeam) => user.teamId !== null && user.team?.name != "aucune").map((user: usersWithTeam) => {
                         return (
                             <CarouselItem key={user.id} className="md:basis-1/2 lg:basis-1/3">
                                 <div className="p-1">
