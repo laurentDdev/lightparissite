@@ -45,7 +45,7 @@ const TableDouanierAdmin = ({myUsers, usersLength}: {myUsers: usersWithRoleAndTe
                         <TableCell>{user.id}</TableCell>
                         <TableCell>{user.email}</TableCell>
                         <TableCell>{user.name}</TableCell>
-                        <TableCell>{user.role?.name}</TableCell>
+                        <TableCell>{user.roleId}</TableCell>
                         <TableCell>{user.team?.name ? user.team.name : "Aucune team"}</TableCell>
                         <TableCell>
                             <Button variant={"destructive"} onClick={() => handleDeleteDouanier(user.id)} >
