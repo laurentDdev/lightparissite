@@ -20,6 +20,12 @@ export type usersWithRoleAndTeam = Prisma.UserGetPayload<{
 }>
 
 
+
+export enum EState {
+    PENDING = "pending",
+    VALIDATED = "validated",
+    REFUSED = "refused",
+}
 export enum ERole {
     USER = "user",
     DOUANIER = "douanier",

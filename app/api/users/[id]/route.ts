@@ -31,7 +31,8 @@ export const GET = async (req: Request, {params}: {params: {id: string}}) => {
           } ,
             include: {
                 role: true,
-                team: true
+                team: true,
+                RequestWl: true
             }
         })
 

@@ -7,11 +7,15 @@ import {Textarea} from "@/components/ui/textarea";
 import {Button} from "@/components/ui/button";
 import {SyntheticEvent, useState} from "react";
 import {Question, Questions} from "@/questions";
+import {useToast} from "@/components/ui/use-toast";
+import axios from "axios";
+import {mutate} from "swr";
+import {useRouter} from "next/navigation";
 
 type FormWl = {
     lastname: string;
     firstname: string;
-    date: string;
+    age: string;
     job: string;
     background: string;
 }
@@ -19,6 +23,11 @@ type FormWl = {
 type view = "form" | "question"
 
 const question : Question[] = Questions;
+
+type Answer = {
+    id: string;
+    answer: string;
+}
 
 const FormWl = () => {
 
@@ -31,15 +40,33 @@ const FormWl = () => {
     })
     const [jobType, setJobType] = useState<string>("")
     const [view, setView] = useState<string>("form")
+    const router = useRouter()
 
-    const [answers, setAnswers] = useState<string[]>([])
+
+    const { toast } = useToast()
+
+    const [answers, setAnswers] = useState<Answer[]>([])
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue({...inputValue, [e.target.id]: e.target.value})
     }
 
     const handleAnswer = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setAnswers([...answers, e.target.id])
-    }
+        const questionId = e.target.name;
+        const answer = e.target.value;
+
+
+        if (answers.find((ans) => ans.id === questionId)) {
+            const newAnswers = answers.filter((ans) => ans.id !== questionId);
+            setAnswers([...newAnswers, { id: questionId, answer: answer }]);
+        } else {
+            const answerObject = {
+                id: questionId,
+                answer: answer
+            };
+            setAnswers(prevState => [...prevState, answerObject]);
+        }
+
+    };
 
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
@@ -48,18 +75,72 @@ const FormWl = () => {
 
         console.log(inputs)
 
-        if (inputs.lastname === "" || inputs.firstname === "" || inputs.date === "" || inputs.job === "" || inputs.background === "" || inputs.jobType === "")  return
+        if (inputs.lastname === "" || inputs.firstname === "" || inputs.age === "" || inputs.job === "" || inputs.background === "" || inputs.jobType === "")  return toast({
+            title: "Erreur",
+            description: "Veuillez remplir correctement le formulaire"
+        })
 
-        if (inputs.lastname?.length < 3 || inputs.firstname?.length < 3 || inputs.job?.length < 3 || inputs.background?.length < 30) return
+        if (inputs.lastname?.length < 3 || inputs.firstname?.length < 3 || inputs.job?.length < 3 || inputs.background?.length < 30) return toast({
+            title: "Erreur",
+            description: "Veuillez remplir correctement le formulaire"
+        })
 
-        console.log("test")
         setView("question")
 
     }
 
-    const handleConfirm = (e: SyntheticEvent) => {
+    const handleConfirm = async (e: SyntheticEvent) => {
         e.preventDefault()
-        console.log(answers)
+        if (answers.length < Questions.length) {
+            toast({
+                title: "Erreur",
+                description: "Vous n'avez pas répondu a toutes les questions"
+            })
+            return
+        }
+
+        let goodAnswers = 1;
+
+        answers.forEach((answer) => {
+            const question = Questions.find((q) => q.question === answer.id);
+            if (question?.answer === answer.answer) {
+                goodAnswers++;
+            }
+        });
+        const inputs = {...inputValue, jobType}
+        const response = await axios.post('/api/users/requestwl', {goodAnswers, inputs})
+        console.log(response.data)
+
+        if (response.data.status === 200) {
+            toast({
+                title: "Demande envoyée",
+                description: "Votre demande a bien été envoyée"
+            })
+            setTimeout(() => {
+                router.push("/")
+            }, 2000)
+        }
+
+        if (response.data.status === 403 && response.data.message === "You have already made 3 requests") {
+            toast({
+                title: "Erreur",
+                description: "Vous avez déjà fait 3 demandes, veuillez contacter un staff"
+            })
+            setTimeout(() => {
+                router.push("/")
+            }, 3000)
+        }
+
+        if (response.data.status === 403 && response.data.message === "Your request is already pending or validated") {
+            toast({
+                title: "Erreur",
+                description: "Votre demande est déjà en attente ou validée"
+            })
+            setTimeout(() => {
+                router.push("/")
+            }, 3000)
+        }
+
     }
 
     if (view == "form") {
@@ -87,7 +168,7 @@ const FormWl = () => {
                             </SelectContent>
                         </Select>
 
-                        <Textarea id={"background"} placeholder={"background"} className={"resize-none"} rows={7} onInput={(e: any) => handleChange(e)}  />
+                        <Textarea id={"background"} placeholder={"background"} className={"resize-none"} rows={5} onInput={(e: any) => handleChange(e)}  />
 
                         <Button type={"submit"} onClick={handleSubmit} variant={"discord"}>Passer a l'étape suivante</Button>
 
@@ -112,7 +193,7 @@ const FormWl = () => {
                                     {
                                         q.options.map((option: string, index) => (
                                             <div className={"flex gap-2"}>
-                                                <input onInput={handleAnswer} type="radio" name={q.question} id={option} key={index} />
+                                                <input onChange={handleAnswer} type="radio" value={option} name={q.question} id={q.question} key={index} />
                                                 <label htmlFor={option}>{option}</label>
                                             </div>
                                         ))

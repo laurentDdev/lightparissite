@@ -13,10 +13,18 @@ import {usersWithRoleAndTeam} from "@/types";
 import {Button} from "@/components/ui/button";
 import {useRouter} from "next/navigation";
 import ButtonJoin from "@/components/button-join";
+import axios from "axios";
 
 const TableDouanierAdmin = ({myUsers, usersLength}: {myUsers: usersWithRoleAndTeam[], usersLength: number}) => {
 
     const router = useRouter();
+
+
+
+    const handleDeleteDouanier = async (id: string) => {
+        const {data} = await axios.delete(`/api/users/roles/douane/${id}`)
+        console.log(data)
+    }
 
     return (
         <Table>
@@ -40,9 +48,9 @@ const TableDouanierAdmin = ({myUsers, usersLength}: {myUsers: usersWithRoleAndTe
                         <TableCell>{user.role?.name}</TableCell>
                         <TableCell>{user.team?.name ? user.team.name : "Aucune team"}</TableCell>
                         <TableCell>
-                            <ButtonJoin url={`/admin/dashboard/users/view/${user.id}`} variant={"destructive"} inSite={true} >
-                                Voir
-                            </ButtonJoin>
+                            <Button variant={"destructive"} onClick={() => handleDeleteDouanier(user.id)} >
+                                Supprimer le douanier
+                            </Button>
                         </TableCell>
                     </TableRow>
                 ))}

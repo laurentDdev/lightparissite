@@ -39,17 +39,19 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?     @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
-  teamId String?
-  team   Team?   @relation(fields: [teamId], references: [id])
-  roleId String @default("user")
-  role   Role?   @relation(fields: [roleId], references: [name])
+  teamId        String?
+  team          Team?       @relation(fields: [teamId], references: [id])
+  roleId        String      @default("user")
+  role          Role?       @relation(fields: [roleId], references: [name])
+  RequestWl     RequestWl[]
+  nbRequest     Int         @default(0)
 
   @@index([teamId])
 }
@@ -69,9 +71,22 @@ model Team {
 }
 
 model Role {
-  name String @id @unique
+  name  String @id @unique
   users User[]
 }
 
+model RequestWl {
+  id         String @id @default(cuid())
+  userEmail  String
+  user       User   @relation(fields: [userEmail], references: [id], onDelete: Cascade)
+  fistName   String
+  lastName   String
+  date       String
+  job        String
+  jobType    String
+  background String @db.Text
+  score      Int
+  status     String @default("pending")
 
-
+  @@index([userEmail])
+}
