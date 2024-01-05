@@ -75,7 +75,7 @@ const ProfileMenu = ({email, name, image}: Props) => {
 
                     {
                         (user && user.roleId == ERole.DOUANIER || user && user.roleId == ERole.ADMIN) && (
-                            <DropdownMenuItem className={"cursor-pointer flex items-center gap-2"} >
+                            <DropdownMenuItem className={"cursor-pointer flex items-center gap-2"} onClick={() => router.push("/douane/dashboard/request/pending")} >
                                 <MdLocalPolice  />
                                 <span>Espace douanier</span>
                             </DropdownMenuItem>

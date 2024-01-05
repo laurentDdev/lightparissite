@@ -19,6 +19,12 @@ export type usersWithRoleAndTeam = Prisma.UserGetPayload<{
     }
 }>
 
+export type requestWithUser = Prisma.RequestWlGetPayload<{
+  include: {
+    user: true
+  }
+}>
+
 
 
 export enum EState {

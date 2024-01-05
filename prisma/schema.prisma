@@ -54,6 +54,7 @@ model User {
   nbRequest     Int         @default(0)
 
   @@index([teamId])
+  @@index([roleId])
 }
 
 model VerificationToken {
@@ -78,7 +79,7 @@ model Role {
 model RequestWl {
   id         String @id @default(cuid())
   userEmail  String
-  user       User   @relation(fields: [userEmail], references: [id], onDelete: Cascade)
+  user       User   @relation(fields: [userEmail], references: [email])
   fistName   String
   lastName   String
   date       String
