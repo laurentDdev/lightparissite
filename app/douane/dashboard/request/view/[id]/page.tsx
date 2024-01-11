@@ -36,7 +36,7 @@ const Page = ({params}: {params: {id: string}}) => {
     }
 
 
-    const handleNextStep = () => {
+    const handleNextStep = async () => {
         axios.put(`/api/request/view/${request?.id}`, {
             newState : EState.VALIDATED
         }).then(() => {
@@ -55,25 +55,22 @@ const Page = ({params}: {params: {id: string}}) => {
         })
 
         /// TODO : Add ping to discord for the user
+
     }
 
-    const handleStopStep = () => {
-        axios.put(`/api/request/view/${request?.id}`, {
-            newState : EState.REFUSED
-        }).then(() => {
+    const handleRefuseWl = async () => {
+        try {
+            await axios.delete(`/api/request/view/${params.id}?accept=false`)
             toast({
-                title: "Demande refusé",
-                description: "Merci d'avoir refusé cette demande",
+                title: "Whitelist refusé",
+                description: "Vous avez refusé la whitelist",
             })
-            setTimeout(() => {
-                router.back()
-            }, 2000);
-        }).catch((err) => {
+        }catch (e: any) {
             toast({
                 title: "Une erreur est survenue",
-                description: err,
+                description: e.message,
             })
-        })
+        }
     }
 
 
@@ -112,7 +109,7 @@ const Page = ({params}: {params: {id: string}}) => {
                             <Button variant={"ghost"} onClick={() => router.back() } >Retour</Button>
                             <div>
                             <Button variant={'outline'} onClick={handleNextStep}>Passez a l'entretien</Button>
-                            <Button variant={'destructive'} onClick={handleStopStep} >Refuser la candidature</Button>
+                            <Button variant={'destructive'} onClick={handleRefuseWl} >Refuser la candidature</Button>
                             </div>
                         </div>
 

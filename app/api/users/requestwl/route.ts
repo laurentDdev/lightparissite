@@ -54,7 +54,7 @@ export const POST = async (req: Request) => {
                 userEmail: session.user?.email as string,
                 score: goodAnswers,
                 background: inputs.background,
-                fistName: inputs.firstname,
+                firstName: inputs.firstname,
                 lastName: inputs.lastname,
                 job: inputs.job,
                 jobType: inputs.jobType,

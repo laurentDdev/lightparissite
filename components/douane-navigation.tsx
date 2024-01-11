@@ -22,11 +22,6 @@ const douaneNavigationMenu = [
         path: "/douane/dashboard/request/validated",
         icon: <FaListUl />
     },
-    {
-        title: "Liste des demandes refusées",
-        path: "/douane/dashboard/request/refused",
-        icon: <FaListUl />
-    }
 ]
 
 const DouaneNavigation = () => {
