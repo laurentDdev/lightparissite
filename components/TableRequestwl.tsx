@@ -9,7 +9,7 @@ import {
     TableHeader,
     TableRow
 } from "@/components/ui/table";
-import {requestWithUser, usersWithRoleAndTeam} from "@/types";
+import {EState, requestWithUser, usersWithRoleAndTeam} from "@/types";
 import {Button} from "@/components/ui/button";
 import {useRouter} from "next/navigation";
 import ButtonJoin from "@/components/button-join";
@@ -28,6 +28,7 @@ const TableRequestWL = ({requests, requestsLenght, type}: {requests: requestWith
                     <TableHead>Prenom rp</TableHead>
                     <TableHead>Type de job</TableHead>
                     <TableHead>Fait par</TableHead>
+                    <TableHead>Action</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -39,9 +40,20 @@ const TableRequestWL = ({requests, requestsLenght, type}: {requests: requestWith
                         <TableCell>{request.jobType}</TableCell>
                         <TableCell>{request.user.name}</TableCell>
                         <TableCell>
-                            <ButtonJoin url={`/douane/dashboard/request/view/${request.id}`} variant={"destructive"} inSite={true} >
+                            {
+                                type == EState.PENDING ? (
+                                    <ButtonJoin url={`/douane/dashboard/request/view/${request.id}`} variant={"destructive"} inSite={true} >
                                 Voir
                             </ButtonJoin>
+                                ) : type == EState.VALIDATED ? (
+                                    <div className='flex gap-2'>
+                                        <Button variant={'outline'}>Accepter la whitelist</Button>
+                                        <Button variant={'destructive'}>Refuser la whitelist</Button>
+                                    </div>
+                                ) : (
+                                    <p>Aucune action possible</p>
+                                )
+                            }
                         </TableCell>
                     </TableRow>
                 ))}

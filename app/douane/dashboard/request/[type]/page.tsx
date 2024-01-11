@@ -8,6 +8,7 @@ import {ERole, requestWithUser} from "@/types";
 import {useRequests} from "@/hooks/useRequests";
 import TableRequestWL from "@/components/TableRequestwl";
 import PaginationRequests from "@/components/PaginationRequests";
+import { Input } from '@/components/ui/input';
 
 const Page = ({params}: {params: {type: string}}) => {
 
@@ -15,22 +16,8 @@ const Page = ({params}: {params: {type: string}}) => {
     const [currentPage, setCurrentPage] = React.useState(1);
     const [myRequests, setMyRequests] = React.useState<requestWithUser[]>([]);
     const router = useRouter()
-
-    if (status === "unauthenticated") {
-        return router.back();
-    }
-
     const {data: user, isFetching, error} = useUserRole(session?.user?.email as string);
-
-    if (user?.roleId !== ERole.ADMIN && user?.roleId !== ERole.DOUANIER) {
-        return router.back();
-    }
-
     const {data: requests, isFetching: fetchingRequest, error: requestError} = useRequests(params.type);
-
-    if (isFetching || fetchingRequest) {
-        return <div>Chargement...</div>;
-    }
 
     const startIndex = (currentPage - 1) * 10;
     const endIndex = startIndex + 10;
@@ -38,7 +25,23 @@ const Page = ({params}: {params: {type: string}}) => {
 
     useEffect(() => {
         setMyRequests(requests?.slice(startIndex, endIndex));
-    }, []);
+    }, [requests]);
+
+    if (status === "unauthenticated") {
+        return router.back();
+    }
+
+
+    if (user?.roleId !== ERole.ADMIN && user?.roleId !== ERole.DOUANIER) {
+        return router.back();
+    }
+
+
+    if (isFetching || fetchingRequest) {
+        return <div>Chargement...</div>;
+    }
+
+   
 
 
     const handleNextPage = () => {
@@ -51,10 +54,25 @@ const Page = ({params}: {params: {type: string}}) => {
         setCurrentPage((prevPage) => prevPage - 1);
     };
 
+    const handleFilterUsers = (e: any) => {
+        const value = e.target.value;
+        if (value === "") {
+            setCurrentPage(1);
+            setMyRequests(requests?.slice(startIndex, endIndex));
+            return;
+        }
+        const filteredUsers = requests?.filter((req: requestWithUser) => {
+            return req.userEmail?.toLowerCase().includes(value.toLowerCase());
+        });
+        setCurrentPage(1);
+        setMyRequests(filteredUsers?.slice(startIndex, endIndex));
+    };
+
 
     return (
         <>
-            <TableRequestWL requests={myRequests} requestsLenght={myRequests.length} type={params.type} />
+            <Input onChange={handleFilterUsers} placeholder={"Rechercher un utilisateur par email"} />
+            <TableRequestWL requests={myRequests} requestsLenght={myRequests?.length} type={params.type} />
             <PaginationRequests handleNextPage={handleNextPage} handlePreviousPage={handlePreviousPage} />
         </>
     );
