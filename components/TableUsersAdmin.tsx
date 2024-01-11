@@ -37,7 +37,7 @@ const TableUsersAdmin = ({myUsers, usersLength}: {myUsers: usersWithRoleAndTeam[
                         <TableCell>{user.id}</TableCell>
                         <TableCell>{user.email}</TableCell>
                         <TableCell>{user.name}</TableCell>
-                        <TableCell>{user.role?.name}</TableCell>
+                        <TableCell>{user.role?.name ? user.role.name : "Aucun role"}</TableCell>
                         <TableCell>{user.team?.name ? user.team.name : "Aucune team"}</TableCell>
                         <TableCell>
                             <ButtonJoin url={`/admin/dashboard/users/view/${user.id}`} variant={"destructive"} inSite={true} >

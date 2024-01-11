@@ -80,7 +80,7 @@ model RequestWl {
   id         String @id @default(cuid())
   userEmail  String
   user       User   @relation(fields: [userEmail], references: [email])
-  fistName   String
+  firstName   String
   lastName   String
   date       String
   job        String
