@@ -1,10 +1,11 @@
 import React from 'react';
 import PageContainer from "@/components/page-container";
-import {Poppins} from 'next/font/google'
+
 
 import FormWl from "@/components/form-wl";
 import {getAuthSession} from "@/lib/auth-options";
 import ButtonJoin from "@/components/button-join";
+import {Poppins} from 'next/font/google'
 const poppins = Poppins({weight: "900", subsets: ['latin']})
 const Page = async () => {
 

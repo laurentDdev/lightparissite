@@ -28,9 +28,6 @@ const Page = ({params}: {params: {type: string}}) => {
 
     const {data: requests, isFetching: fetchingRequest, error: requestError} = useRequests(params.type);
 
-    if (isFetching || fetchingRequest) {
-        return <div>Chargement...</div>;
-    }
 
     const startIndex = (currentPage - 1) * 10;
     const endIndex = startIndex + 10;
@@ -38,8 +35,11 @@ const Page = ({params}: {params: {type: string}}) => {
 
     useEffect(() => {
         setMyRequests(requests?.slice(startIndex, endIndex));
-    }, []);
+    }, [requests]);
 
+    if (isFetching || fetchingRequest) {
+        return <div>Chargement...</div>;
+    }
 
     const handleNextPage = () => {
         if (currentPage === totalPages) return;
@@ -54,7 +54,7 @@ const Page = ({params}: {params: {type: string}}) => {
 
     return (
         <>
-            <TableRequestWL requests={myRequests} requestsLenght={myRequests.length} type={params.type} />
+            <TableRequestWL requests={myRequests} requestsLenght={myRequests?.length} type={params.type} />
             <PaginationRequests handleNextPage={handleNextPage} handlePreviousPage={handlePreviousPage} />
         </>
     );
